@@ -619,5 +619,176 @@
     "column": "pendientes",
     "done": false,
     "date": "2026-09-04"
+  },
+  {
+    "id": "t70",
+    "title": "Idea/Proyecto: Sel4 Microkernel Soberano Robotica Y Hardware",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t71",
+    "title": "Idea/Proyecto: Servidor Autonomo Enzimas",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t72",
+    "title": "Idea/Proyecto: Mundo 3D Personal",
+    "frente": "3D / VR / CAD",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t73",
+    "title": "Idea/Proyecto: Fabricacion Nivel Laser Autonivelante",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t74",
+    "title": "Idea/Proyecto: App Soberana Ariadna Core Client",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t75",
+    "title": "Idea/Proyecto: Servidor Cloud Gratuito Bsd Oracle",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t76",
+    "title": "Idea/Proyecto: Entorno Grafico Agy Multiplexor",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t77",
+    "title": "Idea/Proyecto: Analisis Sistemico 2026 Oraculo Masa",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t78",
+    "title": "Idea/Proyecto: Lutheria Guitarras Y Bajo Fretless",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t79",
+    "title": "Idea/Proyecto: Idea Enjambre Globulos Blancos Monitores N8N",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t80",
+    "title": "Idea/Proyecto: Generador Planos 3D Vr Cad",
+    "frente": "3D / VR / CAD",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t81",
+    "title": "Idea/Proyecto: Puente Automatizado Deepseek Web",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t82",
+    "title": "Idea/Proyecto: Servidor Nube Hogarena Bsd Linux",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t83",
+    "title": "Idea/Proyecto: Protocolo Kit Soberania Operativa",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t84",
+    "title": "Idea/Proyecto: Arquitectura Comunicacion Total Voz Y Cli Soberana",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t85",
+    "title": "Idea/Proyecto: Visor Inmersivo Hardware Ultra Bajo Consumo",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t86",
+    "title": "Idea/Proyecto: Sistema Voz Soberano Handsfree Taller",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t87",
+    "title": "Idea/Proyecto: Nube Personal Plug And Play Bsd",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
+  },
+  {
+    "id": "t88",
+    "title": "Idea/Proyecto: Distro Nvme Usb Soberana Ariadna Os",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-05"
   }
 ]
