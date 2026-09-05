@@ -116,6 +116,37 @@
             overflow: hidden;
         }
 
+        @media (max-width: 800px) {
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+            }
+            main.tablero {
+                display: flex;
+                flex-direction: column;
+                overflow: visible;
+                padding: 10px;
+                gap: 14px;
+            }
+            .columna-pizarra {
+                min-height: 220px;
+                overflow: visible;
+            }
+            .lista-tarjetas {
+                max-height: 380px;
+                overflow-y: auto;
+            }
+            .filtros-bar {
+                flex-wrap: wrap;
+                gap: 4px;
+                padding: 6px 10px;
+            }
+            header {
+                padding: 8px 10px;
+            }
+        }
+
         .columna-pizarra {
             background: var(--bg-panel);
             border: 1px solid var(--borde-tenue);
