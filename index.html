@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TABLERO SOBERANO — FRENTES Y TAREAS // ARIADNA CORE</title>
+    <style>
+        :root {
+            --bg-base: #060709;
+            --bg-panel: #0d0f14;
+            --bg-card: #141820;
+            --bg-card-hover: #1a202c;
+            --border: #242b38;
+            --border-focus: #3b465c;
+            --text-main: #e2e8f0;
+            --text-muted: #8492a6;
+            --gold: #d4af37;
+            --gold-dim: #997b24;
+            --cyan: #4fd1c5;
+            --red: #f56565;
+            --green: #48bb78;
+            --font-mono: 'Space Mono', 'Courier New', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--bg-panel);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--gold);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        button.btn {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        button.btn:hover {
+            background-color: var(--gold);
+            color: #000;
+            border-color: var(--gold);
+        }
+
+        button.btn-danger:hover {
+            background-color: var(--red);
+            color: #fff;
+            border-color: var(--red);
+        }
+
+        .filter-bar {
+            background-color: var(--bg-panel);
+            border-bottom: 1px solid var(--border);
+            padding: 6px 18px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 9.5px;
+            padding: 3px 8px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            color: var(--gold);
+            border-color: var(--gold-dim);
+            background-color: #1a1e28;
+        }
+
+        main.board {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr;
+            gap: 12px;
+            padding: 14px 18px;
+            overflow: hidden;
+        }
+
+        .column {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .col-header {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background-color: #0b0d12;
+        }
+
+        .col-title {
+            color: var(--gold);
+            font-size: 11px;
+        }
+
+        .col-header.col-urgent .col-title {
+            color: var(--red);
+        }
+
+        .col-header.col-next .col-title {
+            color: var(--cyan);
+        }
+
+        .col-header.col-done .col-title {
+            color: var(--green);
+        }
+
+        .col-count {
+            background-color: var(--bg-card);
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-size: 9px;
+            color: var(--text-muted);
+        }
+
+        .card-list {
+            flex: 1;
+            padding: 8px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .card-list.drag-over {
+            background-color: #10141d;
+            border: 1px dashed var(--gold-dim);
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--border-focus);
+            padding: 9px 10px;
+            border-radius: 2px;
+            cursor: grab;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: border-color 0.15s ease, transform 0.1s ease;
+        }
+
+        .card:hover {
+            background-color: var(--bg-card-hover);
+            border-color: var(--border-focus);
+        }
+
+        .card.dragging {
+            opacity: 0.4;
+            cursor: grabbing;
+        }
+
+        .card.priority-CRITICA { border-left-color: var(--red); }
+        .card.priority-ALTA { border-left-color: var(--gold); }
+        .card.priority-MEDIA { border-left-color: var(--cyan); }
+        .card.priority-BAJA { border-left-color: var(--text-muted); }
+
+        .card.is-done {
+            opacity: 0.65;
+            border-left-color: var(--green);
+        }
+
+        .card.is-done .card-title {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-frente {
+            font-size: 8.5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .priority-badge {
+            font-size: 8px;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .priority-CRITICA .priority-badge { background: #3c1212; color: #ff8e8e; border: 1px solid #732222; }
+        .priority-ALTA .priority-badge { background: #3b2f11; color: #f5d77f; border: 1px solid #785e19; }
+        .priority-MEDIA .priority-badge { background: #102e2b; color: #81e6d9; border: 1px solid #1f544f; }
+        .priority-BAJA .priority-badge { background: #1c212c; color: #a0aec0; border: 1px solid #2d3748; }
+
+        .card-body {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .card-check {
+            margin-top: 2px;
+            cursor: pointer;
+        }
+
+        .card-title {
+            flex: 1;
+            font-size: 10px;
+            line-height: 1.35;
+            color: var(--text-main);
+            font-weight: 600;
+            user-select: text;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 8px;
+            color: var(--text-muted);
+            border-top: 1px solid #1c222c;
+            padding-top: 4px;
+        }
+
+        .card-actions button {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 8.5px;
+            padding: 1px 4px;
+        }
+
+        .card-actions button:hover {
+            color: var(--red);
+        }
+
+        /* Modal simple para nueva tarea */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .modal {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-focus);
+            padding: 16px;
+            width: 380px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .modal h3 {
+            color: var(--gold);
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        .modal input, .modal select, .modal textarea {
+            background: var(--bg-base);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            padding: 6px 8px;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .modal input:focus, .modal select:focus, .modal textarea:focus {
+            border-color: var(--gold);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">MATRIZ SOBERANA DE FRENTES Y TAREAS // ARIADNA</div>
+        <div class="header-actions">
+            <span id="sync-status" style="font-size: 8.5px; color: var(--cyan); margin-right: 8px;">ORIGEN: CARGANDO...</span>
+            <button class="btn" onclick="openNewTaskModal()">+ NUEVA TAREA</button>
+            <button class="btn" onclick="exportJSON()">EXPORTAR JSON</button>
+            <button class="btn" onclick="reloadFromJSON()">SINCRONIZAR JSON</button>
+        </div>
+    </header>
+
+    <div class="filter-bar">
+        <span style="color: var(--text-muted); font-size: 9px;">FILTRAR POR FRENTE:</span>
+        <button class="filter-btn active" onclick="setFilter('TODOS')">TODOS</button>
+        <button class="filter-btn" onclick="setFilter('ARIADNA CORE')">ARIADNA CORE</button>
+        <button class="filter-btn" onclick="setFilter('3D / VR / CAD')">3D / VR / CAD</button>
+        <button class="filter-btn" onclick="setFilter('FORENSE & TALLER')">FORENSE & TALLER</button>
+        <button class="filter-btn" onclick="setFilter('PERSONAL & DERECHO')">PERSONAL & DERECHO</button>
+        <button class="filter-btn" onclick="setFilter('OBRAS & CLIENTES')">OBRAS & CLIENTES</button>
+    </div>
+
+    <main class="board">
+        <!-- COLUMNA 1: BANCO DE FRENTES Y PENDIENTES -->
+        <div class="column">
+            <div class="col-header">
+                <span class="col-title">FRENTES ABIERTOS & PENDIENTES</span>
+                <span class="col-count" id="count-pendientes">0</span>
+            </div>
+            <div class="card-list" id="col-pendientes" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'pendientes')"></div>
+        </div>
+
+        <!-- COLUMNA 2: PRÓXIMAS TAREAS (EN COLA) -->
+        <div class="column">
+            <div class="col-header col-next">
+                <span class="col-title">PRÓXIMAS TAREAS (EN COLA)</span>
+                <span class="col-count" id="count-proximas">0</span>
+            </div>
+            <div class="card-list" id="col-proximas" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'proximas')"></div>
+        </div>
+
+        <!-- COLUMNA 3: PRIORIDADES DIARIAS OBLIGATORIAS -->
+        <div class="column">
+            <div class="col-header col-urgent">
+                <span class="col-title">PRIORIDADES DIARIAS OBLIGATORIAS</span>
+                <span class="col-count" id="count-obligatorias">0</span>
+            </div>
+            <div class="card-list" id="col-obligatorias" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'obligatorias')"></div>
+        </div>
+
+        <!-- COLUMNA 4: COMPLETADAS / HISTORIAL -->
+        <div class="column">
+            <div class="col-header col-done">
+                <span class="col-title">COMPLETADAS & REGISTRADAS</span>
+                <span class="col-count" id="count-completadas">0</span>
+            </div>
+            <div class="card-list" id="col-completadas" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event, 'completadas')"></div>
+        </div>
+    </main>
+
+    <!-- MODAL NUEVA TAREA -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal">
+            <h3>AGREGAR TAREA / FRENTE</h3>
+            <input type="text" id="newTaskTitle" placeholder="Descripción de la tarea...">
+            <select id="newTaskFrente">
+                <option value="ARIADNA CORE">ARIADNA CORE</option>
+                <option value="3D / VR / CAD">3D / VR / CAD</option>
+                <option value="FORENSE & TALLER">FORENSE & TALLER</option>
+                <option value="PERSONAL & DERECHO">PERSONAL & DERECHO</option>
+                <option value="OBRAS & CLIENTES">OBRAS & CLIENTES</option>
+            </select>
+            <select id="newTaskPriority">
+                <option value="CRITICA">CRÍTICA (ROJO)</option>
+                <option value="ALTA" selected>ALTA (ORO)</option>
+                <option value="MEDIA">MEDIA (CIAN)</option>
+                <option value="BAJA">BAJA (GRIS)</option>
+            </select>
+            <select id="newTaskColumn">
+                <option value="pendientes">Frentes y Pendientes</option>
+                <option value="proximas">Próximas Tareas</option>
+                <option value="obligatorias">Prioridades Diarias</option>
+            </select>
+            <div class="modal-buttons">
+                <button class="btn btn-danger" onclick="closeModal()">CANCELAR</button>
+                <button class="btn" onclick="saveNewTask()">GUARDAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const PRIORITIES = ["CRITICA", "ALTA", "MEDIA", "BAJA"];
+        let currentFilter = "TODOS";
+
+        const DEFAULT_TASKS = [
+            // ARIADNA CORE
+            { id: "t1", title: "Entorno gráfico nativo para AGY / Multiplexor CLI (Input fijo)", frente: "ARIADNA CORE", priority: "CRITICA", column: "obligatorias", done: false, date: "2026-09-04" },
+            { id: "t2", title: "Monitoreo continuo de SHM Corazón / Glándulas en C + Cairo", frente: "ARIADNA CORE", priority: "ALTA", column: "proximas", done: false, date: "2026-09-04" },
+            { id: "t3", title: "Doctrina de software asentada en REGLAS.md (Boceto Web -> C + Cairo)", frente: "ARIADNA CORE", priority: "ALTA", column: "completadas", done: true, date: "2026-09-04" },
+            { id: "t4", title: "Suavizado tipográfico antialiasing fontconfig aplicado en X11", frente: "ARIADNA CORE", priority: "ALTA", column: "completadas", done: true, date: "2026-09-04" },
+            { id: "t5", title: "Despliegue de Ingesta Autónoma y Absorción de Backups", frente: "ARIADNA CORE", priority: "MEDIA", column: "pendientes", done: false, date: "2026-09-04" },
+            
+            // 3D / VR / CAD
+            { id: "t6", title: "Prototipo Lienzo 2D a Extrusión 3D automática en Three.js", frente: "3D / VR / CAD", priority: "CRITICA", column: "obligatorias", done: false, date: "2026-09-04" },
+            { id: "t7", title: "Soporte WebXR para recorrido en VR a escala 1:1 de planos", frente: "3D / VR / CAD", priority: "ALTA", column: "proximas", done: false, date: "2026-09-04" },
+            { id: "t8", title: "Puente Headless con DeepSeek Web para cálculo matemático y mallas 3D", frente: "3D / VR / CAD", priority: "ALTA", column: "pendientes", done: false, date: "2026-09-04" },
+            { id: "t9", title: "Migración de visualización definitiva 3D a C + Raylib (30 MB RAM)", frente: "3D / VR / CAD", priority: "MEDIA", column: "pendientes", done: false, date: "2026-09-04" },
+
+            // FORENSE & TALLER
+            { id: "t10", title: "Clonación y rescate forense de discos rígidos (Vulcano / ddrescue)", frente: "FORENSE & TALLER", priority: "ALTA", column: "pendientes", done: false, date: "2026-09-04" },
+            { id: "t11", title: "Bunker Móvil Trafic: Aislamiento y equipamiento de taller rodante", frente: "FORENSE & TALLER", priority: "MEDIA", column: "pendientes", done: false, date: "2026-09-04" },
+            { id: "t12", title: "Fabricación de nivel láser autonivelante en taller", frente: "FORENSE & TALLER", priority: "BAJA", column: "pendientes", done: false, date: "2026-09-04" },
+            { id: "t13", title: "Sistema de control por voz hands-free para taller", frente: "FORENSE & TALLER", priority: "BAJA", column: "pendientes", done: false, date: "2026-09-04" },
+
+            // PERSONAL & DERECHO
+            { id: "t14", title: "Rutina física diaria, nutrición y entrenamiento Tauro", frente: "PERSONAL & DERECHO", priority: "CRITICA", column: "obligatorias", done: false, date: "2026-09-04" },
+            { id: "t15", title: "Avance materias de Derecho y TUPVI (Lectura y síntesis)", frente: "PERSONAL & DERECHO", priority: "ALTA", column: "proximas", done: false, date: "2026-09-04" },
+            { id: "t16", title: "Gestión y mejoras de Casa y Terreno MDQ", frente: "PERSONAL & DERECHO", priority: "MEDIA", column: "pendientes", done: false, date: "2026-09-04" },
+
+            // OBRAS & CLIENTES
+            { id: "t17", title: "Presupuestación y planos de obras activas", frente: "OBRAS & CLIENTES", priority: "ALTA", column: "proximas", done: false, date: "2026-09-04" },
+            { id: "t18", title: "Seguimiento de obras en curso y certificación de avances", frente: "OBRAS & CLIENTES", priority: "MEDIA", column: "pendientes", done: false, date: "2026-09-04" }
+        ];
+
+        let tasks = [];
+
+        async function loadTasks() {
+            try {
+                // Intentar leer directamente de tareas_maestras.json
+                const res = await fetch("tareas_maestras.json?t=" + Date.now());
+                if (res.ok) {
+                    tasks = await res.json();
+                    saveTasks(false);
+                    document.getElementById("sync-status").innerText = "ORIGEN: tareas_maestras.json (SINCRONIZADO)";
+                    document.getElementById("sync-status").style.color = "var(--green)";
+                    renderBoard();
+                    return;
+                }
+            } catch (err) {
+                console.log("No se pudo hacer fetch a tareas_maestras.json (modo local/file):", err);
+            }
+
+            // Fallback a localStorage
+            const saved = localStorage.getItem("ariadna_matriz_tareas");
+            if (saved) {
+                try { tasks = JSON.parse(saved); } catch (e) { tasks = DEFAULT_TASKS; }
+            } else {
+                tasks = DEFAULT_TASKS;
+                saveTasks(false);
+            }
+            document.getElementById("sync-status").innerText = "ORIGEN: MEMORIA LOCAL (OFFLINE)";
+            document.getElementById("sync-status").style.color = "var(--gold)";
+            renderBoard();
+        }
+
+        async function reloadFromJSON() {
+            document.getElementById("sync-status").innerText = "ORIGEN: RECARGANDO...";
+            await loadTasks();
+        }
+
+        function exportJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tasks, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "tareas_maestras.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function saveTasks(updateOrigin = true) {
+            localStorage.setItem("ariadna_matriz_tareas", JSON.stringify(tasks));
+            if (updateOrigin) {
+                document.getElementById("sync-status").innerText = "ORIGEN: EDITADO LOCAL (PENDIENTE SYNC)";
+                document.getElementById("sync-status").style.color = "var(--gold)";
+            }
+        }
+
+        // Refresco automatico cada 5 segundos si está disponible
+        setInterval(() => {
+            if (window.location.protocol.startsWith("http")) {
+                loadTasks();
+            }
+        }, 5000);
+
+        function resetToSystemTasks() {
+            if (confirm("¿Restaurar las tareas canónicas del sistema?")) {
+                tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+                saveTasks();
+                renderBoard();
+            }
+        }
+
+        function setFilter(frente) {
+            currentFilter = frente;
+            document.querySelectorAll(".filter-btn").forEach(btn => {
+                btn.classList.toggle("active", btn.innerText === frente);
+            });
+            renderBoard();
+        }
+
+        function cyclePriority(taskId, event) {
+            event.stopPropagation();
+            const t = tasks.find(x => x.id === taskId);
+            if (!t) return;
+            const idx = PRIORITIES.indexOf(t.priority);
+            t.priority = PRIORITIES[(idx + 1) % PRIORITIES.length];
+            saveTasks();
+            renderBoard();
+        }
+
+        function toggleDone(taskId, event) {
+            event.stopPropagation();
+            const t = tasks.find(x => x.id === taskId);
+            if (!t) return;
+            t.done = !t.done;
+            if (t.done) {
+                t.column = "completadas";
+            } else {
+                t.column = "pendientes";
+            }
+            saveTasks();
+            renderBoard();
+        }
+
+        function deleteTask(taskId, event) {
+            event.stopPropagation();
+            tasks = tasks.filter(x => x.id !== taskId);
+            saveTasks();
+            renderBoard();
+        }
+
+        // Drag and Drop
+        let draggedTaskId = null;
+
+        function handleDragStart(e, id) {
+            draggedTaskId = id;
+            e.target.classList.add("dragging");
+            e.dataTransfer.setData("text/plain", id);
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove("dragging");
+            document.querySelectorAll(".card-list").forEach(el => el.classList.remove("drag-over"));
+        }
+
+        function allowDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add("drag-over");
+        }
+
+        function dragLeave(e) {
+            e.currentTarget.classList.remove("drag-over");
+        }
+
+        function handleDrop(e, targetColumn) {
+            e.preventDefault();
+            e.currentTarget.classList.remove("drag-over");
+            const id = draggedTaskId || e.dataTransfer.getData("text/plain");
+            const t = tasks.find(x => x.id === id);
+            if (t) {
+                t.column = targetColumn;
+                if (targetColumn === "completadas") {
+                    t.done = true;
+                } else if (t.done && targetColumn !== "completadas") {
+                    t.done = false;
+                }
+                saveTasks();
+                renderBoard();
+            }
+        }
+
+        function renderBoard() {
+            const columns = {
+                pendientes: document.getElementById("col-pendientes"),
+                proximas: document.getElementById("col-proximas"),
+                obligatorias: document.getElementById("col-obligatorias"),
+                completadas: document.getElementById("col-completadas")
+            };
+
+            Object.values(columns).forEach(col => col.innerHTML = "");
+
+            const counts = { pendientes: 0, proximas: 0, obligatorias: 0, completadas: 0 };
+
+            tasks.forEach(task => {
+                if (counts[task.column] !== undefined) counts[task.column]++;
+
+                if (currentFilter !== "TODOS" && task.frente !== currentFilter) {
+                    return;
+                }
+
+                const card = document.createElement("div");
+                card.className = `card priority-${task.priority} ${task.done ? 'is-done' : ''}`;
+                card.draggable = true;
+                card.ondragstart = (e) => handleDragStart(e, task.id);
+                card.ondragend = handleDragEnd;
+
+                card.innerHTML = `
+                    <div class="card-meta">
+                        <span class="card-frente">${task.frente}</span>
+                        <span class="priority-badge" title="Clic para alternar prioridad" onclick="cyclePriority('${task.id}', event)">[${task.priority}]</span>
+                    </div>
+                    <div class="card-body">
+                        <input type="checkbox" class="card-check" ${task.done ? "checked" : ""} onclick="toggleDone('${task.id}', event)">
+                        <div class="card-title">${task.title}</div>
+                    </div>
+                    <div class="card-footer">
+                        <span>ID: ${task.id}</span>
+                        <div class="card-actions">
+                            <button onclick="deleteTask('${task.id}', event)" title="Eliminar">[BORRAR]</button>
+                        </div>
+                    </div>
+                `;
+
+                if (columns[task.column]) {
+                    columns[task.column].appendChild(card);
+                }
+            });
+
+            document.getElementById("count-pendientes").innerText = counts.pendientes;
+            document.getElementById("count-proximas").innerText = counts.proximas;
+            document.getElementById("count-obligatorias").innerText = counts.obligatorias;
+            document.getElementById("count-completadas").innerText = counts.completadas;
+        }
+
+        function openNewTaskModal() {
+            document.getElementById("taskModal").style.display = "flex";
+            document.getElementById("newTaskTitle").focus();
+        }
+
+        function closeModal() {
+            document.getElementById("taskModal").style.display = "none";
+            document.getElementById("newTaskTitle").value = "";
+        }
+
+        function saveNewTask() {
+            const title = document.getElementById("newTaskTitle").value.trim();
+            if (!title) return;
+            const frente = document.getElementById("newTaskFrente").value;
+            const priority = document.getElementById("newTaskPriority").value;
+            const col = document.getElementById("newTaskColumn").value;
+
+            const newTask = {
+                id: "t" + Date.now().toString().slice(-4),
+                title: title,
+                frente: frente,
+                priority: priority,
+                column: col,
+                done: false,
+                date: new Date().toISOString().split("T")[0]
+            };
+
+            tasks.unshift(newTask);
+            saveTasks();
+            renderBoard();
+            closeModal();
+        }
+
+        window.onload = loadTasks;
+    </script>
+</body>
+</html>

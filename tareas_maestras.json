@@ -1,0 +1,164 @@
+[
+  {
+    "id": "t1",
+    "title": "Entorno gráfico nativo para AGY / Multiplexor CLI (Input fijo)",
+    "frente": "ARIADNA CORE",
+    "priority": "CRITICA",
+    "column": "obligatorias",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t2",
+    "title": "Monitoreo continuo de SHM Corazón / Glándulas en C + Cairo",
+    "frente": "ARIADNA CORE",
+    "priority": "ALTA",
+    "column": "proximas",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t3",
+    "title": "Doctrina de software asentada en REGLAS.md (Boceto Web -> C + Cairo)",
+    "frente": "ARIADNA CORE",
+    "priority": "ALTA",
+    "column": "completadas",
+    "done": true,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t4",
+    "title": "Suavizado tipográfico antialiasing fontconfig aplicado en X11",
+    "frente": "ARIADNA CORE",
+    "priority": "ALTA",
+    "column": "completadas",
+    "done": true,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t5",
+    "title": "Despliegue de Ingesta Autónoma y Absorción de Backups",
+    "frente": "ARIADNA CORE",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t6",
+    "title": "Prototipo Lienzo 2D a Extrusión 3D automática en Three.js",
+    "frente": "3D / VR / CAD",
+    "priority": "CRITICA",
+    "column": "obligatorias",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t7",
+    "title": "Soporte WebXR para recorrido en VR a escala 1:1 de planos",
+    "frente": "3D / VR / CAD",
+    "priority": "ALTA",
+    "column": "proximas",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t8",
+    "title": "Puente Headless con DeepSeek Web para cálculo matemático y mallas 3D",
+    "frente": "3D / VR / CAD",
+    "priority": "ALTA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t9",
+    "title": "Migración de visualización definitiva 3D a C + Raylib (30 MB RAM)",
+    "frente": "3D / VR / CAD",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t10",
+    "title": "Clonación y rescate forense de discos rígidos (Vulcano / ddrescue)",
+    "frente": "FORENSE & TALLER",
+    "priority": "ALTA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t11",
+    "title": "Bunker Móvil Trafic: Aislamiento y equipamiento de taller rodante",
+    "frente": "FORENSE & TALLER",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t12",
+    "title": "Fabricación de nivel láser autonivelante en taller",
+    "frente": "FORENSE & TALLER",
+    "priority": "BAJA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t13",
+    "title": "Sistema de control por voz hands-free para taller",
+    "frente": "FORENSE & TALLER",
+    "priority": "BAJA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t14",
+    "title": "Rutina física diaria, nutrición y entrenamiento Tauro",
+    "frente": "PERSONAL & DERECHO",
+    "priority": "CRITICA",
+    "column": "obligatorias",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t15",
+    "title": "Avance materias de Derecho y TUPVI (Lectura y síntesis)",
+    "frente": "PERSONAL & DERECHO",
+    "priority": "ALTA",
+    "column": "proximas",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t16",
+    "title": "Gestión y mejoras de Casa y Terreno MDQ",
+    "frente": "PERSONAL & DERECHO",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t17",
+    "title": "Presupuestación y planos de obras activas",
+    "frente": "OBRAS & CLIENTES",
+    "priority": "ALTA",
+    "column": "proximas",
+    "done": false,
+    "date": "2026-09-04"
+  },
+  {
+    "id": "t18",
+    "title": "Seguimiento de obras en curso y certificación de avances",
+    "frente": "OBRAS & CLIENTES",
+    "priority": "MEDIA",
+    "column": "pendientes",
+    "done": false,
+    "date": "2026-09-04"
+  }
+]
