@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PIZARRÓN DE TAREAS Y FRENTES // ARIADNA</title>
-    <!-- Pizarrón 100% puro y ligero: Cero librerías externas, cero WebGL, cero sobrecarga de CPU -->
     <style>
         :root {
             --bg-pizarra: #121418;
-            --bg-panel: #161920;
-            --bg-tarjeta: #1c202a;
-            --bg-tarjeta-hover: #222734;
-            --borde-tenue: #282f3d;
-            --borde-foco: #4a5568;
+            --bg-panel: #171a21;
+            --bg-tarjeta: #1e222b;
+            --bg-tarjeta-hover: #262c38;
+            --borde-tenue: #28303f;
+            --borde-foco: #475569;
             --tiza-hueso: #dedcd5;
             --tiza-apagada: #7e8794;
             --tiza-salvia: #88a88c;
@@ -30,11 +29,6 @@
 
         body {
             background-color: var(--bg-pizarra);
-            /* Cuadrícula sutil de pizarra técnica en CSS puro: 0% uso de CPU/GPU */
-            background-image: 
-                linear-gradient(to right, rgba(40, 47, 61, 0.35) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(40, 47, 61, 0.35) 1px, transparent 1px);
-            background-size: 24px 24px;
             color: var(--tiza-hueso);
             font-family: var(--font-mono);
             font-size: 11px;
@@ -44,16 +38,13 @@
             flex-direction: column;
         }
 
-
-
         header {
-            background: rgba(18, 20, 24, 0.92);
+            background: var(--bg-panel);
             border-bottom: 1px solid var(--borde-tenue);
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(4px);
         }
 
         .header-title {
@@ -70,7 +61,7 @@
         }
 
         .btn {
-            background: transparent;
+            background: var(--bg-tarjeta);
             border: 1px solid var(--borde-tenue);
             color: var(--tiza-hueso);
             font-family: var(--font-mono);
@@ -78,12 +69,11 @@
             padding: 4px 10px;
             cursor: pointer;
             border-radius: 2px;
-            transition: all 0.15s ease;
         }
 
         .btn:hover {
             border-color: var(--tiza-hueso);
-            background: rgba(222, 220, 213, 0.08);
+            background: #2a313f;
         }
 
         .btn-accion {
@@ -91,13 +81,8 @@
             color: var(--tiza-celeste);
         }
 
-        .btn-accion:hover {
-            background: rgba(133, 163, 178, 0.15);
-        }
-
-        /* Barra de frentes / filtros didácticos */
         .frentes-bar {
-            background: rgba(22, 25, 32, 0.85);
+            background: var(--bg-panel);
             border-bottom: 1px solid var(--borde-tenue);
             padding: 6px 20px;
             display: flex;
@@ -119,10 +104,9 @@
         .frente-btn.active, .frente-btn:hover {
             color: var(--tiza-hueso);
             border-color: var(--borde-foco);
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--bg-tarjeta);
         }
 
-        /* Tablero tipo pizarra con 4 columnas */
         main.tablero {
             flex: 1;
             display: grid;
@@ -133,13 +117,12 @@
         }
 
         .columna-pizarra {
-            background: rgba(22, 25, 32, 0.78);
+            background: var(--bg-panel);
             border: 1px solid var(--borde-tenue);
             border-radius: 2px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            backdrop-filter: blur(2px);
         }
 
         .col-encabezado {
@@ -151,7 +134,7 @@
             font-size: 10px;
             font-weight: 700;
             letter-spacing: 1px;
-            background: rgba(18, 20, 24, 0.6);
+            background: #111318;
         }
 
         .col-titulo-obligatorias { color: var(--tiza-terracota); }
@@ -167,7 +150,6 @@
             border-radius: 2px;
         }
 
-        /* Lista de tarjetas con scroll suave */
         .lista-tarjetas {
             flex: 1;
             padding: 8px;
@@ -178,22 +160,20 @@
         }
 
         .lista-tarjetas.drag-over {
-            background: rgba(133, 163, 178, 0.08);
+            background: #1b212c;
             border: 1px dashed var(--tiza-celeste);
         }
 
-        /* Tarjeta contraída por defecto */
         .tarjeta {
             background: var(--bg-tarjeta);
             border: 1px solid var(--borde-tenue);
             border-left: 3px solid var(--tiza-apagada);
             border-radius: 2px;
-            padding: 7px 9px;
+            padding: 6px 8px;
             cursor: grab;
             display: flex;
             flex-direction: column;
             gap: 4px;
-            transition: all 0.12s ease;
         }
 
         .tarjeta:hover {
@@ -206,7 +186,6 @@
             cursor: grabbing;
         }
 
-        /* Indicador de tiza por prioridad */
         .tarjeta.p-CRITICA { border-left-color: var(--tiza-terracota); }
         .tarjeta.p-ALTA { border-left-color: var(--tiza-ambar); }
         .tarjeta.p-MEDIA { border-left-color: var(--tiza-celeste); }
@@ -243,11 +222,6 @@
             color: var(--tiza-apagada);
         }
 
-        .tiza-tag:hover {
-            color: var(--tiza-hueso);
-            border-color: var(--borde-foco);
-        }
-
         .tarjeta-cuerpo {
             display: flex;
             align-items: flex-start;
@@ -257,7 +231,6 @@
         .check-box {
             margin-top: 2px;
             cursor: pointer;
-            accent-color: var(--tiza-salvia);
         }
 
         .tarjeta-titulo {
@@ -267,13 +240,12 @@
             color: var(--tiza-hueso);
         }
 
-        /* Sección colapsable de notas/sub-tareas */
         .tarjeta-detalle {
             display: none;
             font-size: 8.5px;
             color: var(--tiza-apagada);
             padding-top: 4px;
-            border-top: 1px dashed var(--borde-tenue);
+            border-top: 1px solid var(--borde-tenue);
             margin-top: 2px;
             line-height: 1.4;
         }
@@ -292,13 +264,8 @@
             padding: 0 2px;
         }
 
-        .btn-toggle-detalle:hover {
-            color: var(--tiza-hueso);
-        }
-
-        /* Pie de página de estado */
         footer {
-            background: rgba(18, 20, 24, 0.95);
+            background: var(--bg-panel);
             border-top: 1px solid var(--borde-tenue);
             padding: 5px 20px;
             display: flex;
@@ -308,7 +275,6 @@
             color: var(--tiza-apagada);
         }
 
-        /* Modal simple de nueva tarea */
         .modal-fondo {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -340,10 +306,6 @@
             outline: none;
         }
 
-        .modal-caja input:focus, .modal-caja select:focus, .modal-caja textarea:focus {
-            border-color: var(--tiza-celeste);
-        }
-
         .modal-botones {
             display: flex;
             justify-content: flex-end;
@@ -354,67 +316,63 @@
 </head>
 <body>
     <header>
-            <div class="header-title">PIZARRÓN DE TAREAS Y FRENTES // ARIADNA</div>
-            <div class="header-controls">
-                <span id="sync-indicador" style="font-size: 8.5px; color: var(--tiza-salvia);">ORIGEN: CARGANDO...</span>
-                <button class="btn" onclick="toggleColapsoGlobal()">EXPANDIR / CONTRAER TODO</button>
-                <button class="btn btn-accion" onclick="abrirModal()">+ NUEVO ITEM</button>
-                <button class="btn" onclick="descargarJSON()">EXPORTAR JSON</button>
-            </div>
-        </header>
+        <div class="header-title">PIZARRÓN DE TAREAS Y FRENTES // ARIADNA</div>
+        <div class="header-controls">
+            <span id="sync-indicador" style="font-size: 8.5px; color: var(--tiza-salvia);">ORIGEN: CARGANDO...</span>
+            <button class="btn" onclick="toggleColapsoGlobal()">EXPANDIR / CONTRAER TODO</button>
+            <button class="btn btn-accion" onclick="abrirModal()">+ NUEVO ITEM</button>
+            <button class="btn" onclick="recargarManual()">RECARGAR</button>
+        </div>
+    </header>
 
-        <div class="frentes-bar">
-            <span style="font-size: 8.5px; color: var(--tiza-apagada);">FRENTES:</span>
-            <button class="frente-btn active" onclick="filtrarFrente('TODOS')">TODOS</button>
-            <button class="frente-btn" onclick="filtrarFrente('ARIADNA CORE')">ARIADNA CORE</button>
-            <button class="frente-btn" onclick="filtrarFrente('3D / VR / CAD')">3D / VR / CAD</button>
-            <button class="frente-btn" onclick="filtrarFrente('FORENSE & TALLER')">FORENSE & TALLER</button>
-            <button class="frente-btn" onclick="filtrarFrente('PERSONAL & DERECHO')">PERSONAL & DERECHO</button>
-            <button class="frente-btn" onclick="filtrarFrente('OBRAS & CLIENTES')">OBRAS & CLIENTES</button>
+    <div class="frentes-bar">
+        <span style="font-size: 8.5px; color: var(--tiza-apagada);">FRENTES:</span>
+        <button class="frente-btn active" onclick="filtrarFrente('TODOS')">TODOS</button>
+        <button class="frente-btn" onclick="filtrarFrente('ARIADNA CORE')">ARIADNA CORE</button>
+        <button class="frente-btn" onclick="filtrarFrente('3D / VR / CAD')">3D / VR / CAD</button>
+        <button class="frente-btn" onclick="filtrarFrente('FORENSE & TALLER')">FORENSE & TALLER</button>
+        <button class="frente-btn" onclick="filtrarFrente('PERSONAL & DERECHO')">PERSONAL & DERECHO</button>
+        <button class="frente-btn" onclick="filtrarFrente('OBRAS & CLIENTES')">OBRAS & CLIENTES</button>
+    </div>
+
+    <main class="tablero">
+        <div class="columna-pizarra">
+            <div class="col-encabezado">
+                <span class="col-titulo-pendientes">FRENTES ABIERTOS</span>
+                <span class="contador" id="cnt-pendientes">0</span>
+            </div>
+            <div class="lista-tarjetas" id="col-pendientes" ondragover="permitirDrop(event)" ondragleave="salirDrop(event)" ondrop="soltar(event, 'pendientes')"></div>
         </div>
 
-        <main class="tablero">
-            <!-- COLUMNA 1: FRENTES ABIERTOS Y PENDIENTES -->
-            <div class="columna-pizarra">
-                <div class="col-encabezado">
-                    <span class="col-titulo-pendientes">FRENTES ABIERTOS</span>
-                    <span class="contador" id="cnt-pendientes">0</span>
-                </div>
-                <div class="lista-tarjetas" id="col-pendientes" ondragover="permitirDrop(event)" ondragleave="salirDrop(event)" ondrop="soltar(event, 'pendientes')"></div>
+        <div class="columna-pizarra">
+            <div class="col-encabezado">
+                <span class="col-titulo-proximas">PRÓXIMAS EN COLA</span>
+                <span class="contador" id="cnt-proximas">0</span>
             </div>
+            <div class="lista-tarjetas" id="col-proximas" ondragover="permitirDrop(event)" ondragleave="salirDrop(event)" ondrop="soltar(event, 'proximas')"></div>
+        </div>
 
-            <!-- COLUMNA 2: PRÓXIMAS TAREAS (EN COLA) -->
-            <div class="columna-pizarra">
-                <div class="col-encabezado">
-                    <span class="col-titulo-proximas">PRÓXIMAS EN COLA</span>
-                    <span class="contador" id="cnt-proximas">0</span>
-                </div>
-                <div class="lista-tarjetas" id="col-proximas" ondragover="permitirDrop(event)" ondragleave="salirDrop(event)" ondrop="soltar(event, 'proximas')"></div>
+        <div class="columna-pizarra">
+            <div class="col-encabezado">
+                <span class="col-titulo-obligatorias">OBLIGATORIAS HOY</span>
+                <span class="contador" id="cnt-obligatorias">0</span>
             </div>
+            <div class="lista-tarjetas" id="col-obligatorias" ondragover="permitirDrop(event)" ondragleave="salirDrop(event)" ondrop="soltar(event, 'obligatorias')"></div>
+        </div>
 
-            <!-- COLUMNA 3: PRIORIDADES OBLIGATORIAS DIARIAS -->
-            <div class="columna-pizarra">
-                <div class="col-encabezado">
-                    <span class="col-titulo-obligatorias">OBLIGATORIAS HOY</span>
-                    <span class="contador" id="cnt-obligatorias">0</span>
-                </div>
-                <div class="lista-tarjetas" id="col-obligatorias" ondragover="permitirDrop(event)" ondragleave="salirDrop(event)" ondrop="soltar(event, 'obligatorias')"></div>
+        <div class="columna-pizarra">
+            <div class="col-encabezado">
+                <span class="col-titulo-hechas">REALIZADAS</span>
+                <span class="contador" id="cnt-completadas">0</span>
             </div>
+            <div class="lista-tarjetas" id="col-completadas" ondragover="permitirDrop(event)" ondragleave="salirDrop(event)" ondrop="soltar(event, 'completadas')"></div>
+        </div>
+    </main>
 
-            <!-- COLUMNA 4: REALIZADAS -->
-            <div class="columna-pizarra">
-                <div class="col-encabezado">
-                    <span class="col-titulo-hechas">REALIZADAS</span>
-                    <span class="contador" id="cnt-completadas">0</span>
-                </div>
-                <div class="lista-tarjetas" id="col-completadas" ondragover="permitirDrop(event)" ondragleave="salirDrop(event)" ondrop="soltar(event, 'completadas')"></div>
-            </div>
-        </main>
-
-        <footer>
-            <span>SISTEMA DE TIZAS DIDÁCTICO // CONTRAÍDO POR DEFECTO</span>
-            <span id="clock-status">ARIADNA 3.0</span>
-        </footer>
+    <footer>
+        <span>PIZARRÓN TÉCNICO ULTRA-LIVIANO (0% CPU / CSS PLANO)</span>
+        <span id="clock-status">ARIADNA 3.0</span>
+    </footer>
 
     <!-- MODAL NUEVA TAREA -->
     <div class="modal-fondo" id="modalTarea">
@@ -447,35 +405,64 @@
         </div>
     </div>
 
-    <!-- LÓGICA DE DATOS Y PIZARRÓN DIDÁCTICO -->
     <script>
-        // --- LÓGICA DE TAREAS Y PIZARRÓN DIDÁCTICO ---
         const PRIORIDADES = ["CRITICA", "ALTA", "MEDIA", "BAJA"];
         let filtroActual = "TODOS";
         let colapsoGlobal = true;
         let tareas = [];
 
-        async function cargarTareas() {
-            try {
-                const res = await fetch("tareas_maestras.json?t=" + Date.now());
-                if (res.ok) {
-                    tareas = await res.json();
-                    document.getElementById("sync-indicador").innerText = "ORIGEN: tareas_maestras.json";
-                    document.getElementById("sync-indicador").style.color = "var(--tiza-salvia)";
-                    renderizar();
-                    return;
-                }
-            } catch (e) {
-                console.log("Modo local o sin fetch HTTP:", e);
-            }
+        // Datos iniciales embebidos para modo file:// 100% instantáneo sin bloqueo
+        const TAREAS_BASE = [
+            { id: "t1", title: "Entorno gráfico nativo para AGY / Multiplexor CLI (Input fijo)", frente: "ARIADNA CORE", priority: "CRITICA", column: "obligatorias", done: false, date: "2026-09-04" },
+            { id: "t2", title: "Monitoreo continuo de SHM Corazón / Glándulas en C + Cairo", frente: "ARIADNA CORE", priority: "ALTA", column: "proximas", done: false, date: "2026-09-04" },
+            { id: "t3", title: "Doctrina de software asentada en REGLAS.md (Boceto Web -> C + Cairo)", frente: "ARIADNA CORE", priority: "ALTA", column: "completadas", done: true, date: "2026-09-04" },
+            { id: "t4", title: "Suavizado tipográfico antialiasing fontconfig aplicado en X11", frente: "ARIADNA CORE", priority: "ALTA", column: "completadas", done: true, date: "2026-09-04" },
+            { id: "t5", title: "Despliegue de Ingesta Autónoma y Absorción de Backups", frente: "ARIADNA CORE", priority: "MEDIA", column: "pendientes", done: false, date: "2026-09-04" },
+            { id: "t6", title: "Prototipo Lienzo 2D a Extrusión 3D automática en Three.js", frente: "3D / VR / CAD", priority: "CRITICA", column: "obligatorias", done: false, date: "2026-09-04" },
+            { id: "t7", title: "Soporte WebXR para recorrido en VR a escala 1:1 de planos", frente: "3D / VR / CAD", priority: "ALTA", column: "proximas", done: false, date: "2026-09-04" },
+            { id: "t8", title: "Puente Headless con DeepSeek Web para cálculo matemático y mallas 3D", frente: "3D / VR / CAD", priority: "ALTA", column: "pendientes", done: false, date: "2026-09-04" },
+            { id: "t9", title: "Migración de visualización definitiva 3D a C + Raylib (30 MB RAM)", frente: "3D / VR / CAD", priority: "MEDIA", column: "pendientes", done: false, date: "2026-09-04" },
+            { id: "t10", title: "Clonación y rescate forense de discos rígidos (Vulcano / ddrescue)", frente: "FORENSE & TALLER", priority: "ALTA", column: "pendientes", done: false, date: "2026-09-04" },
+            { id: "t11", title: "Bunker Móvil Trafic: Aislamiento y equipamiento de taller rodante", frente: "FORENSE & TALLER", priority: "MEDIA", column: "pendientes", done: false, date: "2026-09-04" },
+            { id: "t12", title: "Fabricación de nivel láser autonivelante en taller", frente: "FORENSE & TALLER", priority: "BAJA", column: "pendientes", done: false, date: "2026-09-04" },
+            { id: "t13", title: "Sistema de control por voz hands-free para taller", frente: "FORENSE & TALLER", priority: "BAJA", column: "pendientes", done: false, date: "2026-09-04" },
+            { id: "t14", title: "Rutina física diaria, nutrición y entrenamiento", frente: "PERSONAL & DERECHO", priority: "CRITICA", column: "obligatorias", done: false, date: "2026-09-04" },
+            { id: "t15", title: "Avance materias de Derecho y TUPVI (Lectura y síntesis)", frente: "PERSONAL & DERECHO", priority: "ALTA", column: "proximas", done: false, date: "2026-09-04" },
+            { id: "t16", title: "Gestión y mejoras de Casa y Terreno MDQ", frente: "PERSONAL & DERECHO", priority: "MEDIA", column: "pendientes", done: false, date: "2026-09-04" },
+            { id: "t17", title: "Presupuestación y planos de obras activas", frente: "OBRAS & CLIENTES", priority: "ALTA", column: "proximas", done: false, date: "2026-09-04" },
+            { id: "t18", title: "Seguimiento de obras en curso y certificación de avances", frente: "OBRAS & CLIENTES", priority: "MEDIA", column: "pendientes", done: false, date: "2026-09-04" }
+        ];
 
+        function cargarTareas() {
+            // Si corre bajo HTTP (GitHub Pages o servidor local), intentamos fetch una sola vez
+            if (window.location.protocol.startsWith("http")) {
+                fetch("tareas_maestras.json?t=" + Date.now())
+                    .then(res => res.json())
+                    .then(data => {
+                        tareas = data;
+                        document.getElementById("sync-indicador").innerText = "ORIGEN: GITHUB / HTTP";
+                        renderizar();
+                    })
+                    .catch(() => cargarDeMemoriaLocal());
+            } else {
+                cargarDeMemoriaLocal();
+            }
+        }
+
+        function cargarDeMemoriaLocal() {
             const guardado = localStorage.getItem("ariadna_tareas_pizarron");
             if (guardado) {
-                try { tareas = JSON.parse(guardado); } catch(err) {}
+                try { tareas = JSON.parse(guardado); } catch(e) { tareas = TAREAS_BASE; }
+            } else {
+                tareas = TAREAS_BASE;
             }
-            document.getElementById("sync-indicador").innerText = "ORIGEN: LOCAL";
-            document.getElementById("sync-indicador").style.color = "var(--tiza-ambar)";
+            document.getElementById("sync-indicador").innerText = "ORIGEN: LOCAL (INSTANTÁNEO)";
             renderizar();
+        }
+
+        function recargarManual() {
+            document.getElementById("sync-indicador").innerText = "RECARGANDO...";
+            cargarTareas();
         }
 
         function guardarLocal() {
@@ -495,7 +482,6 @@
 
             tareas.forEach(t => {
                 if (contadores[t.column] !== undefined) contadores[t.column]++;
-
                 if (filtroActual !== "TODOS" && t.frente !== filtroActual) return;
 
                 const card = document.createElement("div");
@@ -602,7 +588,6 @@
             }
         }
 
-        // Modal
         function abrirModal() {
             document.getElementById("modalTarea").style.display = "flex";
             document.getElementById("mTitulo").focus();
@@ -636,22 +621,7 @@
             cerrarModal();
         }
 
-        function descargarJSON() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tareas, null, 2));
-            const a = document.createElement('a');
-            a.setAttribute("href", dataStr);
-            a.setAttribute("download", "tareas_maestras.json");
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-        }
-
-        window.onload = () => {
-            cargarTareas();
-            setInterval(() => {
-                if (window.location.protocol.startsWith("http")) cargarTareas();
-            }, 6000);
-        };
+        window.onload = cargarTareas;
     </script>
 </body>
 </html>
