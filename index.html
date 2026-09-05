@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PIZARRÓN DE TAREAS Y FRENTES // ARIADNA</title>
-    <!-- Three.js para render espacial de fondo interactivo -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Pizarrón 100% puro y ligero: Cero librerías externas, cero WebGL, cero sobrecarga de CPU -->
     <style>
         :root {
             --bg-pizarra: #121418;
@@ -31,6 +30,11 @@
 
         body {
             background-color: var(--bg-pizarra);
+            /* Cuadrícula sutil de pizarra técnica en CSS puro: 0% uso de CPU/GPU */
+            background-image: 
+                linear-gradient(to right, rgba(40, 47, 61, 0.35) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(40, 47, 61, 0.35) 1px, transparent 1px);
+            background-size: 24px 24px;
             color: var(--tiza-hueso);
             font-family: var(--font-mono);
             font-size: 11px;
@@ -38,30 +42,9 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            position: relative;
         }
 
-        /* Canvas Three.js en segundo plano (cuadrícula espacial didáctica) */
-        #bg-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.35;
-        }
 
-        /* Contenedor UI principal por encima del canvas */
-        .ui-container {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-        }
 
         header {
             background: rgba(18, 20, 24, 0.92);
@@ -370,12 +353,7 @@
     </style>
 </head>
 <body>
-
-    <!-- Lienzo espacial Three.js de fondo (rejilla de pizarrón sutil interactiva) -->
-    <canvas id="bg-canvas"></canvas>
-
-    <div class="ui-container">
-        <header>
+    <header>
             <div class="header-title">PIZARRÓN DE TAREAS Y FRENTES // ARIADNA</div>
             <div class="header-controls">
                 <span id="sync-indicador" style="font-size: 8.5px; color: var(--tiza-salvia);">ORIGEN: CARGANDO...</span>
@@ -437,7 +415,6 @@
             <span>SISTEMA DE TIZAS DIDÁCTICO // CONTRAÍDO POR DEFECTO</span>
             <span id="clock-status">ARIADNA 3.0</span>
         </footer>
-    </div>
 
     <!-- MODAL NUEVA TAREA -->
     <div class="modal-fondo" id="modalTarea">
@@ -470,55 +447,9 @@
         </div>
     </div>
 
-    <!-- LÓGICA DE DATOS Y THREE.JS -->
+    <!-- LÓGICA DE DATOS Y PIZARRÓN DIDÁCTICO -->
     <script>
-        // --- 1. THREE.JS EN EL FONDO (Cuadrícula espacial didáctica) ---
-        function initThreeBackground() {
-            const canvas = document.getElementById("bg-canvas");
-            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 120;
-            camera.position.y = 10;
-
-            // Rejilla plana infinita de tiza
-            const gridHelper = new THREE.GridHelper(260, 40, 0x3a4454, 0x1c212a);
-            gridHelper.position.y = -40;
-            gridHelper.rotation.x = 0.2;
-            scene.add(gridHelper);
-
-            // Partículas tenues flotantes de tiza
-            const particlesCount = 80;
-            const geom = new THREE.BufferGeometry();
-            const positions = new Float32Array(particlesCount * 3);
-            for (let i = 0; i < particlesCount * 3; i += 3) {
-                positions[i] = (Math.random() - 0.5) * 200;
-                positions[i+1] = (Math.random() - 0.5) * 100;
-                positions[i+2] = (Math.random() - 0.5) * 100;
-            }
-            geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            const mat = new THREE.PointsMaterial({ color: 0x7e8794, size: 1.2, transparent: true, opacity: 0.35 });
-            const pSystem = new THREE.Points(geom, mat);
-            scene.add(pSystem);
-
-            function animate() {
-                requestAnimationFrame(animate);
-                gridHelper.rotation.y += 0.0003;
-                pSystem.rotation.y += 0.0002;
-                renderer.render(scene, camera);
-            }
-            animate();
-
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-        }
-
-        // --- 2. LÓGICA DE TAREAS Y PIZARRÓN DIDÁCTICO ---
+        // --- LÓGICA DE TAREAS Y PIZARRÓN DIDÁCTICO ---
         const PRIORIDADES = ["CRITICA", "ALTA", "MEDIA", "BAJA"];
         let filtroActual = "TODOS";
         let colapsoGlobal = true;
@@ -716,7 +647,6 @@
         }
 
         window.onload = () => {
-            initThreeBackground();
             cargarTareas();
             setInterval(() => {
                 if (window.location.protocol.startsWith("http")) cargarTareas();
